@@ -1,0 +1,18 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    network_mode: host
+    environment:
+      - CI=true
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    network_mode: host
+    environment:
+      - CI=true
+    depends_on:
+      - backend

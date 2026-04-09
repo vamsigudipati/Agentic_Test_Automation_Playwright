@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechInstructor | AI & Automation Courses</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary-color: #2563eb; /* Royal Blue for AI feel */
+            --secondary-color: #1e40af;
+            --accent-color: #10b981; /* Emerald Green for Automation feel */
+            --dark-bg: #0f172a;
+            --light-text: #f8fafc;
+            --gray-text: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span { color: var(--accent-color); }
+
+        .nav-links button {
+            background: none;
+            border: none;
+            color: var(--gray-text);
+            margin-left: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-links button:hover, .nav-links button.active {
+            color: var(--light-text);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1e293b 100%);
+            color: var(--light-text);
+            padding: 8rem 5% 4rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray-text);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Container */
+        .container {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 20px;
+        }
+
+        /* Section Styling */
+        .section {
+            display: none; /* Hidden by default for SPA behavior */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: block; /* Show when active */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--dark-bg);
+        }
+
+        /* Course Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .tag-ai { background-color: #dbeafe; color: var(--primary-color); }
+        .tag-auto { background-color: #d1fae5; color: var(--accent-color); }
+
+        .course-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-bg);
+        }
+
+        .course-desc {
+            color: var(--gray-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .price {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Details Modal/Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none; border: none;
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .curriculum {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .curriculum li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .curriculum li::before {
+            content: '✓';
+            color: var(--accent-color);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .enroll-btn-large {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-bg);
+            color: var(--gray-text);
+            text-align: center;
+            padding: 3rem;
+            margin-top: 4rem;
+        }
+
+        /* Contact Section Styles */
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .form-group { margin-bottom: 1rem; }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+        
+        textarea { height: 150px; resize: vertical; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2">
+                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                <path d="M12 12L2.5 12"></path>
+                <path d="M12 12L12 2.5"></path>
+                <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+            </svg>
+            TechInstructor
+        </div>
+        <div class="nav-links">
+            <button onclick="navigate('home')" id="btn-home" class="active">Home</button>
+            <button onclick="navigate('ai-course')" id="btn-ai">AI & Machine Learning</button>
+            <button onclick="navigate('automation')" id="btn-auto">Automation Testing</button>
+            <button onclick="navigate('contact')" id="btn-contact">Contact</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Master the Future with AI & Automation</h1>
+        <p>Join expert-led courses designed to upskill your career in Modern Technology. From ChatGPT to Selenium, we cover it all.</p>
+        <a href="#home" class="btn-primary" onclick="navigate('ai-course')">Explore Courses</a>
+    </section>
+
+    <!-- AI Course Section -->
+    <div id="ai-course" class="container section">
+        <div class="section-header">
+            <span class="tag tag-ai">Artificial Intelligence</span>
+            <h2>AI & Machine Learning Masterclass</h2>
+            <p>Unlock the power of generative AI and traditional ML algorithms.</p>
+        </div>
+
+        <div class="course-grid">
+            <!-- Course 1 -->
+            <div class="course-card" onclick="openCourseDetails('Generative AI for Everyone')">
+                <img src="https://placehold.co/600x400/e0f2fe/2563eb?text=AI+Concepts" alt="AI Course" class="card-image">
+                <div class="card-content">
+                    <span class="tag tag-ai">Beginner Friendly</span>
+                    <h3 class="course-title">Generative AI for Everyone</h3>
+                    <p class="course-desc">Understand LLMs, Prompt Engineering, and how to build AI apps without heavy coding.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 6 Weeks</span>
+                        <span class="price">$149</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course 2 -->
+            <div class="course-card" onclick="openCourseDetails('Python for Data Science')">
+                <img src="https://placehold.co/600x400/dcfce7/10b981?text=Python+%26+Data" alt="Data Science" class="card-image">
+                <div class="card-content">
+                    <span class="tag tag-ai">Intermediate</span>
+                    <h3 class="course-title">Python for Data Science</h3>
+                    <p class="course-desc">Master Python, Pandas, and NumPy to analyze data and build predictive models.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 8 Weeks</span>
+                        <span class="price">$199</span>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Course 3 -->
+             <div class="course-card" onclick="openCourseDetails('AI Agent Development')">
+                <img src="https://placehold.co/600x400/3b82f6/ffffff?text=AI+Agents" alt="Agent Dev" class="card-image">
+                <div class="card-content">
+                    <span class="tag tag-ai">Advanced</span>
+                    <h3 class="course-title">AI Agent & Chatbot Development</h3>
+                    <p class="course-desc">Build autonomous AI agents using LangChain and LlamaIndex frameworks.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 10 Weeks</span>
+                        <span class="price">$249</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Automation Section -->
+    <div id="automation" class="container section">
+        <div class="section-header">
+            <span class="tag tag-auto">Quality Assurance</span>
+            <h2>Automation Testing Bootcamp</h2>
+            <p>Transition from manual testing to full-stack automation engineering.</p>
+        </div>
+
+        <div class="course-grid">
+            <!-- Course 4 -->
+            <div class="course-card" onclick="openCourseDetails('Selenium WebDriver with Python')">
+                <img src="https://placehold.co/600x400/f0f9ff/0284c7?text=Selenium+Web" alt="Selenium" class="card-image">
+                <div class="card-content">
+                    <span class="tag tag-auto">Core Skill</span>
+                    <h3 class="course-title">Selenium WebDriver + Python</h3>
+                    <p class="course-desc">Master Web Automation using Selenium, Pytest, and Page Object Model architecture.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 6 Weeks</span>
+                        <span class="price">$179</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course 5 -->
+            <div class="course-card" onclick="openCourseDetails('API Testing with Postman + Python')">
+                <img src="https://placehold.co/600x400/ecfdf5/059669?text=API+Testing" alt="API Testing" class="card-image">
+                <div class="card-content">
+                    <span class="tag tag-auto">Essential</span>
+                    <h3 class="course-title">API Testing & REST Assured</h3>
+                    <p class="course-desc">Learn to test Backend systems, validate JSON responses, and automate APIs.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 4 Weeks</span>
+                        <span class="price">$129</span>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Course 6 -->
+             <div class="course-card" onclick="openCourseDetails('End-to-End DevOps Testing')">
+                <img src="https://placehold.co/600x400/1e293b/cbd5e1?text=DevOps+CI/CD" alt="DevOps" class="card-image">
+                <div class="card-content">
+                    <span class="tag tag-auto">Expert</span>
+                    <h3 class="course-title">DevOps & CI/CD Pipeline Testing</h3>
+                    <p class="course-desc">Integrate automated tests into Jenkins, GitHub Actions, and Docker environments.</p>
+                    <div class="course-meta">
+                        <span>⏱️ 8 Weeks</span>
+                        <span class="price">$229</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section id="contact" class="container section">
+        <div class="section-header">
+            <h2>Get in Touch</h2>
+            <p>Have questions about the curriculum? We are here to help.</p>
+        </div>
+        
+        <div class="contact-form">
+            <form id="contactForm" onsubmit="handleContact(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" required placeholder="I'm interested in the AI course..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <p>&copy; 2023 TechInstructor. All Rights Reserved.</p>
+        <div style="margin-top: 10px; font-size: 0.9rem;">
+            <span style="margin-right: 15px;">Privacy Policy</span>
+            <span>Terms of Service</span>
+        </div>
+    </footer>
+
+    <!-- Course Details Modal -->
+    <div class="modal-overlay" id="courseModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeCourseDetails()">&times;</button>
+            
+            <div class="detail-header">
+                <h2 id="modalTitle">Course Title</h2>
+                <span id="modalTag" class="tag tag-ai">Beginner</span>
+            </div>
+            
+            <img id="modalImg" src="" alt="Course Detail" style="width: 100%; border-radius: 8px; margin-bottom: 20px;">
+            
+            <h3>Course Description</h3>
+            <p id="modalDesc" style="margin-bottom: 20px; color: #64748b;">
+                Detailed course description goes here.
+            </p>
+
+            <h3>What you'll learn</h3>
+                <ul class="curriculum" id="modalCurriculum">
+                    <!-- List items populated by JS -->
+                </ul>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                <div>
+                    <span style="color: #64748b; font-size: 0.9rem;">Duration</span><br>
+                    <strong id="modalDuration">6 Weeks</strong>
+                </div>
+                <div>
+                    <span style="color: #64748b; font-size: 0.9rem;">Price</span><br>
+                    <strong id="modalPrice" style="color: var(--accent-color); font-size: 1.5rem;">$149</strong>
+                </div>
+            </div>
+
+            <button class="btn-primary enroll-btn-large" onclick="alert('Enrollment feature coming soon! Enroll for demo course.')">Enroll Now</button>
+        </div>
+    </div>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC --- */
+
+        // Course Data Repository
+        const courses = {
+            "Generative AI for Everyone": {
+                title: "Generative AI for Everyone",
+                tag: "tag-ai", tagName: "Beginner Friendly",
+                image: "https://placehold.co/600x400/e0f2fe/2563eb?text=AI+Concepts",
+                desc: "This course demystifies Artificial Intelligence for non-developers and developers alike. You will learn how LLMs (Large Language Models) work, master the art of Prompt Engineering, and get a sneak peek into building simple AI applications.",
+                curriculum: [
+                    "Understanding Neural Networks & LLMs",
+                    "Prompt Engineering Fundamentals",
+                    "Intro to ChatGPT, Claude & Gemini",
+                    "Ethics in AI"
+                ],
+                duration: "6 Weeks",
+                price: "$149"
+            },
+            "Python for Data Science": {
+                title: "Python for Data Science",
+                tag: "tag-ai", tagName: "Intermediate",
+                image: "https://placehold.co/600x400/dcfce7/10b981?text=Python+%26+Data",
+                desc: "A comprehensive bootcamp to become proficient in Data Analysis and Machine Learning using Python. Master Pandas, NumPy, and Scikit-Learn.",
+                curriculum: [
+                    "Python Syntax & Data Structures",
+                    "Data Analysis with Pandas",
+                    "Data Visualization with Matplotlib",
+                    "Machine Learning Algorithms (Regression, Clustering)"
+                ],
+                duration: "8 Weeks",
+                price: "$199"
+            },
+            "AI Agent Development": {
+                title: "AI Agent & Chatbot Development",
+                tag: "tag-ai", tagName: "Advanced",
+                image: "https://placehold.co/600x400/3b82f6/ffffff?text=AI+Agents",
+                desc: "Build autonomous agents capable of reasoning and taking actions. This course focuses on modern frameworks like LangChain to create next-gen chatbots.",
+                curriculum: [
+                    "LangChain Architecture",
+                    "Building Context-Aware Agents",
+                    "Connecting AI to Databases",
+                    "Deploying Chatbots to Web"
+                ],
+                duration: "10 Weeks",
+                price: "$249"
+            },
+            "Selenium WebDriver with Python": {
+                title: "Selenium WebDriver + Python",
+                tag: "tag-auto", tagName: "Core Skill",
+                image: "https://placehold.co/600x400/f0f9ff/0284c7?text=Selenium+Web",
+                desc: "Stop clicking manually. This course teaches you to write robust test scripts using Selenium WebDriver, Pytest, and the Page Object Model design pattern.",
+                curriculum: [
+                    "Setting up Selenium Environment",
+                    "Locators (XPath, CSS Selectors)",
+                    "Pytest Framework Introduction",
+                    "Page Object Model Design",
+                    "Handling Delays & Alerts"
+                ],
+                duration: "6 Weeks",
+                price: "$179"
+            },
+            "API Testing with Postman + Python": {
+                title: "API Testing & REST Assured",
+                tag: "tag-auto", tagName: "Essential",
+                image: "https://placehold.co/600x400/ecfdf5/059669?text=API+Testing",
+                desc: "Modern QA is API QA. Learn to validate RESTful services, understand status codes, and automate API tests using Python Requests library.",
+                curriculum: [
+                    "REST API Fundamentals",
+                    "Postman for Manual Testing",
+                    "Automating APIs with Python Requests",
+                    "Validating JSON Responses"
+                ],
+                duration: "4 Weeks",
+                price: "$129"
+            },
+            "End-to-End DevOps Testing": {
+                title: "DevOps & CI/CD Pipeline Testing",
+                tag: "tag-auto", tagName: "Expert",
+                image: "https://placehold.co/600x400/1e293b/cbd5e1?text=DevOps+CI/CD",
+                desc: "Integrate your tests into the pipeline. Learn how to run automation scripts automatically when developers commit code using Jenkins and Docker.",
+                curriculum: [
+                    "Introduction to CI/CD",
+                    "Jenkins Pipeline Setup",
+                    "Docker for Testers",
+                    "Cloud Testing (AWS/Azure Basics)"
+                ],
+                duration: "8 Weeks",
+                price: "$229"
+            }
+        };
+
+        // Navigation Logic
+        function navigate(sectionId) {
+            // 1. Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // 2. Show target section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+
+            // 3. Update Navigation Buttons
+            const buttons = document.querySelectorAll('.nav-links button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Simple logic to highlight correct button
+            if(sectionId === 'home') document.getElementById('btn-home').classList.add('active');
+            if(sectionId === 'ai-course') document.getElementById('btn-ai').classList.add('active');
+            if(sectionId === 'automation') document.getElementById('btn-auto').classList.add('active');
+            if(sectionId === 'contact') document.getElementById('btn-contact').classList.add('active');
+        }
+
+        // Modal/Details Logic
+        function openCourseDetails(courseTitle) {
+            const courseData = courses[courseTitle];
+            
+            if (courseData) {
+                // Populate data
+                document.getElementById('modalTitle').innerText = courseData.title;
+                const tagSpan = document.getElementById('modalTag');
+                tagSpan.className = courseData.tag;
+                tagSpan.innerText = courseData.tagName;
+                
+                document.getElementById('modalImg').src = courseData.image;
+                document.getElementById('modalDesc').innerText = courseData.desc;
+                document.getElementById('modalDuration').innerText = courseData.duration;
+                document.getElementById('modalPrice').innerText = courseData.price;
+
+                // Populate Curriculum
+                const curriculumList = document.getElementById('modalCurriculum');
+                curriculumList.innerHTML = ''; // clear old
+                courseData.curriculum.forEach(topic => {
+                    const li = document.createElement('li');
+                    li.innerText = topic;
+                    curriculumList.appendChild(li);
+                });
+
+                // Show Modal
+                document.getElementById('courseModal').style.display = 'flex';
+            }
+        }
+
+        function closeCourseDetails() {
+            document.getElementById('courseModal').style.display = 'none';
+        }
+
+        // Close modal if clicking outside content
+        window.onclick = function(event) {
+            const modal = document.getElementById('courseModal');
+            if (event.target == modal) {
+                closeCourseDetails();
+            }
+        }
+
+        // Contact Form Logic
+        function handleContact(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            alert(`Thank you, ${name}! We have received your inquiry and will contact you shortly.`);
+            e.target.reset();
+        }
+
+        // Initialize
+        window.onload = function() {
+            navigate('home');
+        };
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Build outputs
+dist/
+build/
+
+# SQLite database (runtime data — not source code)
+*.sqlite
+*.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Playwright
+playwright-report/
+test-results/
+
+# Vite
+*.local

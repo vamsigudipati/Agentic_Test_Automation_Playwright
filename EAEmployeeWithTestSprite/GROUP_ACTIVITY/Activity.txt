@@ -1,0 +1,13 @@
+GROUP ACTIVITY: Testing Agents Orchestration
+
+1. Create Playwright Testing Agent
+2. Create Backend Testing Agent
+3. Create BDD Testing Agent
+
+Orchestrate all these agents to work together in a coordinated manner to achieve comprehensive testing coverage for the application.
+
+GROUP ACTIVITY: Testing Agents Orchestration with SKILLS
+
+1. Create Playwright Testing Agent with SKILLS
+2. Create Backend Testing Agent with SKILLS
+3. Create BDD Testing Agent with SKILLS
