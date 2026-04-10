@@ -1,0 +1,17 @@
+{
+  "name": "group-activity-tests",
+  "version": "1.0.0",
+  "description": "Group Activity: Orchestrated Playwright E2E, Backend API, and BDD tests for the Employee Management app",
+  "scripts": {
+    "test": "playwright test",
+    "test:e2e": "playwright test --project=chromium e2e/",
+    "test:api": "playwright test --project=chromium backend/",
+    "test:bdd": "playwright test --project=chromium bdd/",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report",
+    "test:all": "playwright test --reporter=list"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
