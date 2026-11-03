@@ -25,7 +25,8 @@ module.exports = defineConfig({
   /* Shared settings for all projects */
   use: {
     baseURL: 'http://localhost:5173',
-    trace: 'on-first-retry',
+    /* CI keeps a trace for every failed attempt so it can be uploaded as an artifact */
+    trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'on-first-retry',
   },
